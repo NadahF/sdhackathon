@@ -53,7 +53,7 @@ var player = new (function(){
 	var that = this;
 	that.image = new Image();
 
-	that.image.src = "Boned.png"
+	that.image.src = "boned.png"
 	that.width = 65;
 	that.height = 95;
 	that.frames = 1;
@@ -221,7 +221,7 @@ document.onmousemove = function(e){
 		that.direction= ~~(Math.random() * 2) ? -1 : 1;
 			
 		function randomFood(){
-			var food = ~~(Math.random() * 3);
+			food = ~~(Math.random() * 3);
 
 		
 		console.log("RandomFoodFired");
@@ -241,7 +241,12 @@ document.onmousemove = function(e){
 				//var theFood = randomFood();
 				//console.log(theFood); 
 				//setInterval(theFood, 3000);
+
+				//var timeoutID;
+
+  				//	timeoutID = setTimeout(randomFood, 2000);
 				
+
 				ctx.drawImage(foods[1], that.x, that.y - 40);
 				//console.log("Test");	
 			}
