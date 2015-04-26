@@ -19,12 +19,12 @@ var clear = function(){
 	ctx.fill();
 }
 
-var howManyCircles = 10, circles = [];
+//var howManyCircles = 10, circles = [];
 
-for (var i = 0; i < howManyCircles; i++) 
-	circles.push([Math.random() * width, Math.random() * height, Math.random() * 100, Math.random() / 2]);
+//for (var i = 0; i < howManyCircles; i++) 
+//	circles.push([Math.random() * width, Math.random() * height, Math.random() * 100, Math.random() / 2]);
 
-var DrawCircles = function(){
+/*var DrawCircles = function(){
 	for (var i = 0; i < howManyCircles; i++) {
 		ctx.fillStyle = 'rgba(255, 255, 255, ' + circles[i][3] + ')';
 		ctx.beginPath();
@@ -47,12 +47,13 @@ var MoveCircles = function(e){
 		}
 	}
 };
+*/
 
 var player = new (function(){
 	var that = this;
 	that.image = new Image();
 
-	that.image.src = "angel.png"
+	that.image.src = "Boned.png"
 	that.width = 65;
 	that.height = 95;
 	that.frames = 1;
@@ -84,7 +85,7 @@ var player = new (function(){
 				points++;
 			// if player is in mid of the gamescreen
 			// dont move player up, move obstacles down instead
-			MoveCircles(that.jumpSpeed * 0.5);
+			//MoveCircles(that.jumpSpeed * 0.5);
 			
 			platforms.forEach(function(platform, ind){
 				platform.y += that.jumpSpeed;
@@ -97,6 +98,7 @@ var player = new (function(){
 						type = 0;
 					
 					platforms[ind] = new Platform(Math.random() * (width - platformWidth), platform.y - height, type);
+
 				}
 			});
 		}
@@ -150,7 +152,8 @@ var player = new (function(){
 	that.interval = 0;
 	that.draw = function(){
 		try {
-			ctx.drawImage(that.image, 0, that.height * that.actualFrame, that.width, that.height, that.X, that.Y, that.width, that.height);
+			ctx.drawImage(that.image, 0, that.height * that.actualFrame, that.width, 
+					that.height, that.X, that.Y, that.width, that.height);
 		} 
 		catch (e) {
 		};
@@ -200,10 +203,14 @@ document.onmousemove = function(e){
 			that.onCollide = function(){
 				player.fallStop();
 				player.jumpSpeed = 50;
-			};
+
+				
+				//document.getElementById(imgArray[food]).style.display='none';
+
+
+
 		}
-		
-		
+	}	
 
 		that.x = ~~ x;
 		that.y = y;
@@ -213,6 +220,15 @@ document.onmousemove = function(e){
 		that.isMoving = ~~(Math.random() * 2);
 		that.direction= ~~(Math.random() * 2) ? -1 : 1;
 			
+		function randomFood(){
+			var food = ~~(Math.random() * 3);
+
+		
+		console.log("RandomFoodFired");
+
+		return food; 
+	}
+		
 		that.draw = function(){
 			ctx.fillStyle = 'rgba(255, 255, 255, 1)';
 			var gradient = ctx.createRadialGradient(that.x + (platformWidth/2), that.y + (platformHeight/2), 5, that.x + (platformWidth/2), that.y + (platformHeight/2), 45);
@@ -220,6 +236,15 @@ document.onmousemove = function(e){
 			gradient.addColorStop(1, that.secondColor);
 			ctx.fillStyle = gradient;
 			ctx.fillRect(that.x, that.y, platformWidth, platformHeight);
+			if(type == 1){
+				
+				//var theFood = randomFood();
+				//console.log(theFood); 
+				//setInterval(theFood, 3000);
+				
+				ctx.drawImage(foods[1], that.x, that.y - 40);
+				//console.log("Test");	
+			}
 		};
 	
 		return that;
@@ -229,6 +254,7 @@ document.onmousemove = function(e){
 		var position = 0, type;
 		for (var i = 0; i < nrOfPlatforms; i++) {
 			type = ~~(Math.random()*5);
+
 			if (type == 0) 
 				type = 1;
 			else 
@@ -236,6 +262,8 @@ document.onmousemove = function(e){
 			platforms[i] = new Platform(Math.random() * (width - platformWidth), position, type);
 			if (position < height - platformHeight) 
 				position += ~~(height / nrOfPlatforms);
+
+
 		}
 	}();
 	
@@ -254,9 +282,34 @@ document.onmousemove = function(e){
 	}
 
 var GameLoop = function(){
-	clear();
+
+	//foods = [ "broccoli.png" , "Milk.png", "almond.png"];
+	/*imgArray = new Array();
+
+	imgArray[0] = new Image();
+	imgArray[0].src = "almond.png";
+
+	imgArray[1] = new Image();
+	imgArray[1].src = "Milk.png";
+
+	imgArray[2] = new Image();
+	imgArray[2].src = "broccoli.png";
+
 	//MoveCircles(5);
-	DrawCircles();
+	//DrawCircles(); */
+
+	clear();
+	broccoli = new Image();
+	broccoli.src = "broccoli.png";
+
+	almond = new Image();
+	almond.src = "almond.png";
+
+
+	milk = new Image();
+	milk.src = "Milk.png";
+	
+	foods=[broccoli, almond, milk]; 
 
 	if (player.isJumping) player.checkJump();
 	if (player.isFalling) player.checkFall();
@@ -281,6 +334,7 @@ var GameLoop = function(){
 	ctx.fillText("POINTS:" + points, 10, height-10);
 	
 	if (state)
+		//food = ~~(Math.random() * 3);
 		gLoop = setTimeout(GameLoop, 1000 / 50);
 }
 
@@ -297,5 +351,10 @@ var GameLoop = function(){
 		}, 100);
 		
 	};
-	
+var imgArray;
+var food;
+var broccoli; 
+var almond;
+var milk;
+var foods;
 GameLoop();
